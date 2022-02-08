@@ -1,6 +1,7 @@
+import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
-const CocktailSingle = () => {
+const CocktailSingle: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
