@@ -1,4 +1,4 @@
-import { InputAdornment, TextField } from '@mui/material';
+import { CircularProgress, InputAdornment, TextField } from '@mui/material';
 import { Close, Search } from '@mui/icons-material';
 import type { NextPage } from 'next';
 import Head from 'next/head';
@@ -11,6 +11,7 @@ import styles from '../styles/Home.module.scss';
 const Home: NextPage = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<Cocktail[]>([]);
 
   const clearSearch = () => setSearchTerm('');
@@ -18,16 +19,27 @@ const Home: NextPage = () => {
   const fetchResults = useCallback(async () => {
     const drinks = await searchCocktails(searchTerm);
     setResults(drinks);
+    setLoading(false);
   }, [searchTerm]);
 
   const routeToResult = (result: Cocktail) => {
     router.push(`/cocktails/${result.idDrink}`);
   };
 
+  const EndAdornment = () =>
+    searchTerm.length > 0 ? (
+      <InputAdornment position="end" onClick={clearSearch}>
+        {loading ? <CircularProgress /> : <Close />}
+      </InputAdornment>
+    ) : (
+      <></>
+    );
+
   useEffect(() => {
     let searchTimeout: NodeJS.Timeout;
 
     if (searchTerm.length > 0) {
+      setLoading(true);
       searchTimeout = setTimeout(() => fetchResults(), 200);
     } else {
       setResults([]);
@@ -47,20 +59,17 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>Thirsty</h1>
 
         <TextField
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          placeholder="Find a drink"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
                 <Search />
               </InputAdornment>
             ),
-            endAdornment: (
-              <InputAdornment position="end" onClick={clearSearch}>
-                <Close />
-              </InputAdornment>
-            ),
+            endAdornment: <EndAdornment />,
           }}
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
         ></TextField>
 
         <div className={styles.grid}>
