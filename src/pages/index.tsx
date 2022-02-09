@@ -11,7 +11,6 @@ import styles from '../styles/Home.module.scss';
 const Home: NextPage = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout>();
   const [results, setResults] = useState<Cocktail[]>([]);
 
   const clearSearch = () => setSearchTerm('');
@@ -26,20 +25,16 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => {
-    if (searchTimeout) {
-      clearTimeout(searchTimeout);
+    let searchTimeout: NodeJS.Timeout;
+
+    if (searchTerm.length > 0) {
+      searchTimeout = setTimeout(() => fetchResults(), 200);
+    } else {
+      setResults([]);
     }
 
-    const newTimeout = setTimeout(() => {
-      if (searchTerm.length > 0) {
-        fetchResults();
-      } else {
-        setResults([]);
-      }
-    }, 200);
-
-    setSearchTimeout(newTimeout);
-  }, [searchTerm, searchTimeout, fetchResults]);
+    return () => clearTimeout(searchTimeout);
+  }, [searchTerm, fetchResults]);
 
   return (
     <div className={styles.container}>
