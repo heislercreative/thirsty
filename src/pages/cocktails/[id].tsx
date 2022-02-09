@@ -46,32 +46,37 @@ const CocktailSingle = ({ cocktail }: { cocktail: Cocktail }) => {
   }, [cocktail, buildIngredientsList]);
 
   return (
-    <>
-      {cocktail ? (
-        <>
-          <Head>
-            <title>Thirsty - {strDrink}</title>
-          </Head>
+    <div className="container">
+      <Head>
+        <title>Thirsty - {strDrink}</title>
+      </Head>
+      <div className="cocktail-single">
+        {cocktail ? (
+          <>
+            <div className="text-center">
+              <div className="hero-image">
+                <Image className="round-image" src={strDrinkThumb} alt={strDrink} width={200} height={200} />
+              </div>
 
-          <Image className="round-image" src={strDrinkThumb} alt={strDrink} width={200} height={200} />
+              <h1>{strDrink}</h1>
+            </div>
 
-          <h1>{strDrink}</h1>
+            <h2>Ingredients:</h2>
+            <ul>
+              {ingredientsList.map((item, index) => (
+                <li key={`ingredient-list-${index}`}>
+                  {item.ingredient} {item.measure && `(${item.measure})`}
+                </li>
+              ))}
+            </ul>
 
-          <h2>Ingredients:</h2>
-          <ul>
-            {ingredientsList.map((item, index) => (
-              <li key={`ingredient-list-${index}`}>
-                {item.ingredient} {item.measure && `(${item.measure})`}
-              </li>
-            ))}
-          </ul>
-
-          <p>{strInstructions}</p>
-        </>
-      ) : (
-        <CircularProgress />
-      )}
-    </>
+            <p>{strInstructions}</p>
+          </>
+        ) : (
+          <CircularProgress />
+        )}
+      </div>
+    </div>
   );
 };
 
