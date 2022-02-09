@@ -6,7 +6,11 @@
   "extends": [
     "next/core-web-vitals",
     "eslint:recommended",
+    "plugin:import/typescript",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
-  ]
+  ],
+  "rules": {
+    "react-hooks/exhaustive-deps": "error"
+  }
 }

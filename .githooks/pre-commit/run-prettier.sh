@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "Pre-push prettier..."
+echo "Pre-commit prettier..."
 
 FILES=$(git diff --cached --name-only --diff-filter=ACMR "*.js" "*.jsx" "*.ts" "*.tsx" | sed 's| |\\ |g')
 [ -z "$FILES" ] && exit 0
