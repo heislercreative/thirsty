@@ -15,3 +15,6 @@ npm run build
 # or
 yarn build
 ```
+
+## Live Demo
+https://thirsty-cocktail.herokuapp.com/
