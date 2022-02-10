@@ -1,1 +1,1 @@
-export * from './IngredientsChart';
+export * from './ingredients-chart';

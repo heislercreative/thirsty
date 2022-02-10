@@ -67,6 +67,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
+  // Ideally, would request more results for pre-loading
   const cocktails = await searchCocktails('a');
   const paths = cocktails.map(cocktail => ({ params: { id: cocktail.idDrink } }));
 

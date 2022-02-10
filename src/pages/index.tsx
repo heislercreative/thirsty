@@ -24,7 +24,7 @@ const Home: NextPage = () => {
     setSearching(false);
   }, [searchTerm]);
 
-  const routeToResult = (id: string) => {
+  const routeToResult = (id: number) => {
     setLoading(true);
     router.push(`/cocktails/${id}`);
   };
