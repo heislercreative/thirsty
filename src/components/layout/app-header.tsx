@@ -2,7 +2,7 @@ import { AppBar, IconButton, Toolbar } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 
-export const Header = () => {
+export const AppHeader = () => {
   const router = useRouter();
   const showBack = router.route !== '/';
 
