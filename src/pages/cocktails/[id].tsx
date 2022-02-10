@@ -29,7 +29,7 @@ const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: 
   return (
     <>
       <Head>
-        <title>Thirsty - {strDrink}</title>
+        <title>Thirsty {strDrink ? ` - ${strDrink}` : ''}</title>
       </Head>
 
       <main className="main cocktail-single">
