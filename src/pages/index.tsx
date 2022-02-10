@@ -80,7 +80,15 @@ const Home: NextPage = () => {
             {results.map(({ idDrink, strDrink, strDrinkThumb }) => (
               <ListItem className="results-list-item" key={'result-' + idDrink} onClick={() => routeToResult(idDrink)}>
                 <div className="list-item-image">
-                  <Image className="round-image" src={strDrinkThumb} alt={strDrink} width={200} height={200} />
+                  <Image
+                    className="round-image"
+                    src={strDrinkThumb}
+                    alt={strDrink}
+                    width={200}
+                    height={200}
+                    placeholder="blur"
+                    blurDataURL="/placeholder.png"
+                  />
                 </div>
                 {strDrink}
               </ListItem>

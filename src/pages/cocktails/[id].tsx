@@ -37,7 +37,15 @@ const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: 
           <>
             <div className="text-center">
               <div className="hero-image">
-                <Image className="round-image" src={strDrinkThumb} alt={strDrink} width={200} height={200} />
+                <Image
+                  className="round-image"
+                  src={strDrinkThumb}
+                  alt={strDrink}
+                  placeholder="blur"
+                  blurDataURL="/placeholder.png"
+                  width={200}
+                  height={200}
+                />
               </div>
 
               <h1>{strDrink}</h1>
