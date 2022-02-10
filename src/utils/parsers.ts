@@ -50,10 +50,18 @@ export const parseIngredientsChartData = (ingredients: Ingredient[]): ChartData[
       const conversionRate = conversions[measure];
       if (conversionRate) {
         const value = quantity * conversionRate;
-        data.push({ name, value });
+        const color = generateRandomPastelColor();
+        data.push({ name, value, color });
       }
     }
   });
 
   return data;
+};
+
+export const generateRandomPastelColor = (): string => {
+  const hue = Math.floor(Math.random() * 360);
+  const saturation = Math.floor(20 + 70 * Math.random());
+  const lightness = Math.floor(75 + 15 * Math.random());
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 };
