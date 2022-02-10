@@ -1,16 +1,24 @@
-import { CircularProgress } from '@mui/material';
 import type { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getCocktail, searchCocktails } from '../../api/cocktail';
+import { IngredientsChart } from '../../components/cocktail';
+import { Loader } from '../../components/layout';
 import { Cocktail, Ingredient } from '../../models';
 import { parseIngredients } from '../../utils';
-import { IngredientsChart } from '../../components/cocktail';
 
-const CocktailSingle = ({ cocktail }: { cocktail: Cocktail }) => {
+const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: boolean }) => {
   const { strDrink, strDrinkThumb, strInstructions } = cocktail || {};
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (notFound) {
+      router.push('/');
+    }
+  }, [notFound, router]);
 
   useEffect(() => {
     if (cocktail) {
@@ -38,18 +46,10 @@ const CocktailSingle = ({ cocktail }: { cocktail: Cocktail }) => {
 
             <IngredientsChart ingredients={ingredients} />
 
-            <ul>
-              {ingredients.map((ingredient, index) => (
-                <li key={`ingredient-list-${index}`}>
-                  {ingredient.name} {ingredient.measureString && `(${ingredient.measureString})`}
-                </li>
-              ))}
-            </ul>
-
-            <p>{strInstructions}</p>
+            <p className="instructions">{strInstructions}</p>
           </>
         ) : (
-          <CircularProgress />
+          <Loader />
         )}
       </div>
     </div>
@@ -58,9 +58,10 @@ const CocktailSingle = ({ cocktail }: { cocktail: Cocktail }) => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const cocktail = await getCocktail(`${params?.id}`);
+  const notFound = !cocktail;
 
   return {
-    props: { cocktail },
+    props: { cocktail, notFound },
   };
 };
 

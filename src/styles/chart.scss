@@ -1,0 +1,25 @@
+.rechart-legend-wrapper {
+  position: relative !important;
+  top: unset !important;
+  left: unset !important;
+}
+
+.recharts-legend-item {
+  margin-bottom: 5px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px !important;
+    border-radius: 3px;
+  }
+
+  .recharts-legend-item-text {
+    font-size: $body-font-size;
+    color: unset !important;
+  }
+}
+
+.recharts-wrapper {
+  margin: 20px;
+}

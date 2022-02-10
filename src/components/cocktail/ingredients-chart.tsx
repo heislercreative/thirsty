@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Cell, PieChart, Pie, ResponsiveContainer } from 'recharts';
+import { Cell, Legend, PieChart, Pie } from 'recharts';
 import { ChartData, Ingredient } from '../../models';
 import { parseIngredientsChartData } from '../../utils';
 
@@ -11,14 +11,24 @@ export const IngredientsChart = ({ ingredients }: { ingredients: Ingredient[] })
   }, [ingredients]);
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <PieChart width={400} height={400}>
-        <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}>
+    <div className="d-flex">
+      <Legend
+        layout="vertical"
+        align="left"
+        verticalAlign="middle"
+        iconType="square"
+        iconSize={20}
+        wrapperStyle={{ position: 'relative', margin: 20, top: 'unset', left: 'unset' }}
+        payload={data.map(({ name, color }) => ({ value: name, type: 'square', color }))}
+      />
+
+      <PieChart height={120} width={120}>
+        <Pie data={data} dataKey="value" nameKey="name" outerRadius={60}>
           {data.map((datum, index) => (
             <Cell key={`cell-${index}`} fill={datum.color} />
           ))}
         </Pie>
       </PieChart>
-    </ResponsiveContainer>
+    </div>
   );
 };

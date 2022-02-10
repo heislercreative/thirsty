@@ -44,16 +44,19 @@ export const parseIngredientsChartData = (ingredients: Ingredient[]): ChartData[
   const data: ChartData[] = [];
 
   ingredients.forEach(ingredient => {
-    const { quantity, measure, name } = ingredient;
+    let { quantity, measure, measureString, name } = ingredient;
+    name = name + (measureString ? ` (${measureString})` : '');
+    const color = generateRandomPastelColor();
+    let value = 0;
 
     if (quantity && measure) {
       const conversionRate = conversions[measure];
       if (conversionRate) {
-        const value = quantity * conversionRate;
-        const color = generateRandomPastelColor();
-        data.push({ name, value, color });
+        value = quantity * conversionRate;
       }
     }
+
+    data.push({ name, value, color });
   });
 
   return data;
