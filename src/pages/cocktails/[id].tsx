@@ -27,11 +27,13 @@ const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: 
   }, [cocktail]);
 
   return (
-    <div className="container">
+    <>
       <Head>
         <title>Thirsty - {strDrink}</title>
       </Head>
-      <div className="cocktail-single">
+
+      <main className="main cocktail-single">
+        {/* <div className="cocktail-single"> */}
         {cocktail ? (
           <>
             <div className="text-center">
@@ -51,8 +53,9 @@ const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: 
         ) : (
           <Loader />
         )}
-      </div>
-    </div>
+        {/* </div> */}
+      </main>
+    </>
   );
 };
 
