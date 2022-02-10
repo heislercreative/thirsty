@@ -2,48 +2,21 @@ import { CircularProgress } from '@mui/material';
 import type { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { getCocktail, searchCocktails } from '../../api/cocktail';
-import { Cocktail, IngredientObject } from '../../models';
-import { useCallback, useEffect, useState } from 'react';
+import { Cocktail, Ingredient } from '../../models';
+import { parseIngredients } from '../../utils';
+import { IngredientsChart } from '../../components/cocktail';
 
 const CocktailSingle = ({ cocktail }: { cocktail: Cocktail }) => {
   const { strDrink, strDrinkThumb, strInstructions } = cocktail || {};
-  const [ingredientsList, setIngredientsList] = useState<IngredientObject[]>([]);
-
-  const buildIngredientsList = useCallback((): void => {
-    const ingredients = [];
-    const entries = Object.entries(cocktail).filter(
-      ([key, value]) => (key.includes('strIngredient') || key.includes('strMeasure')) && !!value,
-    );
-
-    for (let i = 1; i <= 15; i++) {
-      const ingredient = entries.find(([key]) => key === `strIngredient${i}`)?.[1]?.trim();
-      const measure = entries.find(([key]) => key === `strMeasure${i}`)?.[1]?.trim();
-      if (ingredient) {
-        ingredients.push({ ingredient, measure });
-      }
-    }
-    setIngredientsList(ingredients);
-  }, [cocktail]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 
   useEffect(() => {
     if (cocktail) {
-      const ingredients = [];
-
-      const entries = Object.entries(cocktail).filter(
-        ([key, value]) => (key.includes('strIngredient') || key.includes('strMeasure')) && !!value,
-      );
-
-      for (let i = 1; i <= 15; i++) {
-        const ingredient = entries.find(([key]) => key === `strIngredient${i}`)?.[1]?.trim();
-        const measure = entries.find(([key]) => key === `strMeasure${i}`)?.[1]?.trim();
-        if (ingredient) {
-          ingredients.push({ ingredient, measure });
-        }
-      }
-      buildIngredientsList();
+      setIngredients(parseIngredients(cocktail));
     }
-  }, [cocktail, buildIngredientsList]);
+  }, [cocktail]);
 
   return (
     <div className="container">
@@ -62,10 +35,13 @@ const CocktailSingle = ({ cocktail }: { cocktail: Cocktail }) => {
             </div>
 
             <h2>Ingredients:</h2>
+
+            <IngredientsChart ingredients={ingredients} />
+
             <ul>
-              {ingredientsList.map((item, index) => (
+              {ingredients.map((ingredient, index) => (
                 <li key={`ingredient-list-${index}`}>
-                  {item.ingredient} {item.measure && `(${item.measure})`}
+                  {ingredient.name} {ingredient.measureString && `(${ingredient.measureString})`}
                 </li>
               ))}
             </ul>

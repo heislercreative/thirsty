@@ -39,7 +39,18 @@ export interface CocktailResponse {
   drinks: Cocktail[];
 }
 
-export interface IngredientObject {
-  ingredient: string;
+export interface Ingredient {
+  name: string;
+  quantity: number;
   measure: string;
+  measureString: string;
+}
+
+export enum MeasureType {
+  cl = 2.957,
+  cup = 0.125,
+  ml = 29.576,
+  oz = 1,
+  tblsp = 1.999,
+  tsp = 5.999,
 }
