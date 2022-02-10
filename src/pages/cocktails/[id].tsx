@@ -33,7 +33,6 @@ const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: 
       </Head>
 
       <main className="main cocktail-single">
-        {/* <div className="cocktail-single"> */}
         {cocktail ? (
           <>
             <div className="text-center">
@@ -53,7 +52,6 @@ const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: 
         ) : (
           <Loader />
         )}
-        {/* </div> */}
       </main>
     </>
   );
@@ -68,11 +66,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
 };
 
-// TODO: Is this that helpful?
 export const getStaticPaths = async () => {
   const cocktails = await searchCocktails('a');
   const paths = cocktails.map(cocktail => ({ params: { id: cocktail.idDrink } }));
-  console.log('getStaticPaths', paths);
 
   return {
     paths,

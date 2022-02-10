@@ -6,12 +6,14 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { searchCocktails } from '../api/cocktail';
+import { Loader } from '../components/layout';
 import { Cocktail } from '../models';
 
 const Home: NextPage = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
+  const [searching, setSearching] = useState(false);
   const [results, setResults] = useState<Cocktail[]>([]);
 
   const clearSearch = () => setSearchTerm('');
@@ -19,17 +21,18 @@ const Home: NextPage = () => {
   const fetchResults = useCallback(async () => {
     const drinks = await searchCocktails(searchTerm);
     setResults(drinks);
-    setLoading(false);
+    setSearching(false);
   }, [searchTerm]);
 
-  const routeToResult = id => {
+  const routeToResult = (id: string) => {
+    setLoading(true);
     router.push(`/cocktails/${id}`);
   };
 
   const EndAdornment = () =>
     searchTerm.length > 0 ? (
-      <InputAdornment position="end" onClick={clearSearch}>
-        {loading ? <CircularProgress /> : <Close />}
+      <InputAdornment className="search-end" position="end" onClick={clearSearch}>
+        {searching ? <CircularProgress size={24} /> : <Close />}
       </InputAdornment>
     ) : (
       <></>
@@ -39,7 +42,7 @@ const Home: NextPage = () => {
     let searchTimeout: NodeJS.Timeout;
 
     if (searchTerm.length > 0) {
-      setLoading(true);
+      setSearching(true);
       searchTimeout = setTimeout(() => fetchResults(), 200);
     } else {
       setResults([]);
@@ -55,9 +58,9 @@ const Home: NextPage = () => {
         <meta name="description" content="Search your favorite cocktail recipes" />
       </Head>
 
-      <main className="main">
-        <h1 className="text-center">Thirsty</h1>
+      {loading && <Loader />}
 
+      <main className="main cocktail-index">
         <TextField
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
@@ -72,14 +75,18 @@ const Home: NextPage = () => {
           }}
         ></TextField>
 
-        <List>
-          {results.map(({ idDrink, strDrink, strDrinkThumb }) => (
-            <ListItem key={'result-' + idDrink} onClick={() => routeToResult(idDrink)}>
-              <Image className="round-image" src={strDrinkThumb} alt={strDrink} width={200} height={200} />
-              {strDrink}
-            </ListItem>
-          ))}
-        </List>
+        {!!results.length && (
+          <List className="results-list">
+            {results.map(({ idDrink, strDrink, strDrinkThumb }) => (
+              <ListItem className="results-list-item" key={'result-' + idDrink} onClick={() => routeToResult(idDrink)}>
+                <div className="list-item-image">
+                  <Image className="round-image" src={strDrinkThumb} alt={strDrink} width={200} height={200} />
+                </div>
+                {strDrink}
+              </ListItem>
+            ))}
+          </List>
+        )}
       </main>
     </>
   );
