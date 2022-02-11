@@ -8,6 +8,12 @@ export const searchCocktails = async (searchTerm: string): Promise<Cocktail[]> =
   return data?.drinks || [];
 };
 
+export const searchCocktailsByFirstLetter = async (letter: string): Promise<Cocktail[]> => {
+  const response = await fetch(`${baseUrl}search.php?f=${letter}`);
+  const data: CocktailResponse = await response.json();
+  return data?.drinks || [];
+};
+
 export const getCocktail = async (id: string): Promise<Cocktail | null> => {
   const response = await fetch(`${baseUrl}lookup.php?i=${id}`);
   const data: CocktailResponse = await response.json();

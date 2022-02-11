@@ -3,10 +3,10 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { getCocktail, getCocktailsBytype } from '../../api/cocktail';
+import { getCocktail, searchCocktailsByFirstLetter } from '../../api/cocktail';
 import { IngredientsChart } from '../../components/cocktail';
 import { Loader } from '../../components/layout';
-import { Cocktail, CocktailType, Ingredient } from '../../models';
+import { Cocktail, Ingredient } from '../../models';
 import { parseIngredients } from '../../utils';
 
 const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: boolean }) => {
@@ -75,9 +75,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const alcoholicCocktails = await getCocktailsBytype(CocktailType.alcoholic);
-  const nonAlcoholicCocktails = await getCocktailsBytype(CocktailType.nonAlcoholic);
-  const paths = [...alcoholicCocktails, ...nonAlcoholicCocktails].map(cocktail => ({ params: { id: cocktail.idDrink } }));
+  const cocktails: Cocktail[] = [];
+
+  for (let i = 0; i < 26; i++) {
+    const letter = (i + 10).toString(36);
+    const cocktailResults = await searchCocktailsByFirstLetter(letter);
+    cocktails.push(...cocktailResults);
+  }
+
+  const paths = cocktails.map(cocktail => ({ params: { id: cocktail.idDrink } }));
 
   return {
     paths,
