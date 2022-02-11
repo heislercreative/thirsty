@@ -10,7 +10,7 @@ export const AppHeader = () => {
     <AppBar className="app-header" position="static">
       <Toolbar>
         {showBack && (
-          <IconButton className="header-back" onClick={() => router.back()}>
+          <IconButton className="header-back" onClick={() => router.push('/')}>
             <ArrowBack />
           </IconButton>
         )}
