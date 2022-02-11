@@ -49,8 +49,10 @@ export interface Ingredient {
 export enum ConversionRate {
   cl = 2.957,
   cup = 0.125,
+  gal = 128,
   ml = 29.576,
   oz = 1,
+  pint = 16,
   tblsp = 1.999,
   tsp = 5.999,
 }
