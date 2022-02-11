@@ -35,8 +35,10 @@ export const parseIngredientsChartData = (ingredients: Ingredient[]): ChartData[
   const conversions: { [key: string]: number } = {
     cl: ConversionRate.cl,
     cup: ConversionRate.cup,
+    gal: ConversionRate.gal,
     ml: ConversionRate.ml,
     oz: ConversionRate.oz,
+    pint: ConversionRate.pint,
     tblsp: ConversionRate.tblsp,
     tsp: ConversionRate.tsp,
   };
