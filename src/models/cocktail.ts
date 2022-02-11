@@ -54,3 +54,8 @@ export enum MeasureType {
   tblsp = 1.999,
   tsp = 5.999,
 }
+
+export enum CocktailType {
+  alcoholic = 'Alcoholic',
+  nonAlcoholic = 'Non_Alcoholic',
+}

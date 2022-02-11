@@ -3,10 +3,10 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { getCocktail, searchCocktails } from '../../api/cocktail';
+import { getCocktail, getCocktailsBytype } from '../../api/cocktail';
 import { IngredientsChart } from '../../components/cocktail';
 import { Loader } from '../../components/layout';
-import { Cocktail, Ingredient } from '../../models';
+import { Cocktail, CocktailType, Ingredient } from '../../models';
 import { parseIngredients } from '../../utils';
 
 const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: boolean }) => {
@@ -75,9 +75,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  // Ideally, would request more results for pre-loading
-  const cocktails = await searchCocktails('a');
-  const paths = cocktails.map(cocktail => ({ params: { id: cocktail.idDrink } }));
+  const alcoholicCocktails = await getCocktailsBytype(CocktailType.alcoholic);
+  const nonAlcoholicCocktails = await getCocktailsBytype(CocktailType.nonAlcoholic);
+  const paths = [...alcoholicCocktails, ...nonAlcoholicCocktails].map(cocktail => ({ params: { id: cocktail.idDrink } }));
 
   return {
     paths,
