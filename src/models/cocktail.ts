@@ -46,7 +46,7 @@ export interface Ingredient {
   measureString: string;
 }
 
-export enum MeasureType {
+export enum ConversionRate {
   cl = 2.957,
   cup = 0.125,
   ml = 29.576,

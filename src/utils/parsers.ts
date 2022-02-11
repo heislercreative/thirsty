@@ -1,4 +1,4 @@
-import { ChartData, Cocktail, Ingredient, MeasureType } from '../models';
+import { ChartData, Cocktail, ConversionRate, Ingredient } from '../models';
 
 export const parseIngredients = (cocktail: Cocktail): Ingredient[] => {
   const ingredients = [];
@@ -33,12 +33,12 @@ export const parseIngredients = (cocktail: Cocktail): Ingredient[] => {
 
 export const parseIngredientsChartData = (ingredients: Ingredient[]): ChartData[] => {
   const conversions: { [key: string]: number } = {
-    cl: MeasureType.cl,
-    cup: MeasureType.cup,
-    ml: MeasureType.ml,
-    oz: MeasureType.oz,
-    tblsp: MeasureType.tblsp,
-    tsp: MeasureType.tsp,
+    cl: ConversionRate.cl,
+    cup: ConversionRate.cup,
+    ml: ConversionRate.ml,
+    oz: ConversionRate.oz,
+    tblsp: ConversionRate.tblsp,
+    tsp: ConversionRate.tsp,
   };
 
   const data: ChartData[] = [];
@@ -50,7 +50,7 @@ export const parseIngredientsChartData = (ingredients: Ingredient[]): ChartData[
     let value = 0;
 
     if (quantity && measure) {
-      const conversionRate = conversions[measure];
+      const conversionRate = conversions[measure.toLowerCase()];
       if (conversionRate) {
         value = quantity * conversionRate;
       }
