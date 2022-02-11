@@ -1,5 +1,16 @@
 import { ChartData, Cocktail, ConversionRate, Ingredient } from '../models';
 
+export const conversions: { [key: string]: number } = {
+  cl: ConversionRate.cl,
+  cup: ConversionRate.cup,
+  gal: ConversionRate.gal,
+  ml: ConversionRate.ml,
+  oz: ConversionRate.oz,
+  pint: ConversionRate.pint,
+  tblsp: ConversionRate.tblsp,
+  tsp: ConversionRate.tsp,
+};
+
 export const parseIngredients = (cocktail: Cocktail): Ingredient[] => {
   const ingredients = [];
   const entries = Object.entries(cocktail).filter(
@@ -15,12 +26,18 @@ export const parseIngredients = (cocktail: Cocktail): Ingredient[] => {
       const measureString = entries.find(([key]) => key === `strMeasure${i}`)?.[1]?.trim();
 
       if (measureString) {
-        const parts = measureString.split(' ');
-        measure = parts[parts.length - 1];
-        const match = measureString.match(/([0-9\/\s]*)(?=\s)/);
+        for (const key of Object.keys(conversions)) {
+          const measureMatch = measureString.match(new RegExp(key));
+          if (measureMatch) {
+            measure = measureMatch[0];
+            break;
+          }
+        }
 
-        if (match) {
-          quantity = eval(match[0].split(' ').join('+'));
+        const quantityMatch = measureString.match(/([0-9\/\s]*)(?=\s)/);
+
+        if (quantityMatch) {
+          quantity = eval(quantityMatch[0].split(' ').join('+'));
         }
       }
 
@@ -32,17 +49,6 @@ export const parseIngredients = (cocktail: Cocktail): Ingredient[] => {
 };
 
 export const parseIngredientsChartData = (ingredients: Ingredient[]): ChartData[] => {
-  const conversions: { [key: string]: number } = {
-    cl: ConversionRate.cl,
-    cup: ConversionRate.cup,
-    gal: ConversionRate.gal,
-    ml: ConversionRate.ml,
-    oz: ConversionRate.oz,
-    pint: ConversionRate.pint,
-    tblsp: ConversionRate.tblsp,
-    tsp: ConversionRate.tsp,
-  };
-
   const data: ChartData[] = [];
 
   ingredients.forEach(ingredient => {
