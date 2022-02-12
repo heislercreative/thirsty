@@ -17,9 +17,13 @@ export const SearchBar = ({
   const clearSearch = () => setSearchTerm('');
 
   const fetchResults = useCallback(async () => {
-    const results = await search(searchTerm);
-    setResults(results);
-    setSearching(false);
+    try {
+      const results = await search(searchTerm);
+      setResults(results);
+      setSearching(false);
+    } catch (err) {
+      setSearching(false);
+    }
   }, [searchTerm, search, setResults]);
 
   const EndAdornment = () =>

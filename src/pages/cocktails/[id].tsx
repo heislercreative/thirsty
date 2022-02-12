@@ -84,8 +84,12 @@ export const getStaticPaths = async () => {
 
   for (let i = 0; i < 26; i++) {
     const letter = (i + 10).toString(36);
-    const cocktailResults = await searchCocktailsByFirstLetter(letter);
-    cocktails.push(...cocktailResults);
+    try {
+      const cocktailResults = await searchCocktailsByFirstLetter(letter);
+      cocktails.push(...cocktailResults);
+    } catch (err) {
+      console.warn(err);
+    }
   }
 
   const paths = cocktails.map(cocktail => ({ params: { id: cocktail.idDrink } }));
