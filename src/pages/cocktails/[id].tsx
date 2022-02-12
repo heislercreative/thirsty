@@ -66,11 +66,16 @@ const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: 
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const cocktail = await getCocktail(`${params?.id}`);
-  const notFound = !cocktail;
+  let cocktail: Cocktail | null;
+
+  try {
+    cocktail = await getCocktail(`${params?.id}`);
+  } catch (err) {
+    return { props: { notFound: true } };
+  }
 
   return {
-    props: { cocktail, notFound },
+    props: { cocktail },
   };
 };
 
