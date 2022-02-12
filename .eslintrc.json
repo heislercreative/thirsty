@@ -9,9 +9,5 @@
     "plugin:import/typescript",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
-  ],
-  "rules": {
-    "react-hooks/exhaustive-deps": "error",
-    "@typescript-eslint/no-unused-vars": "error"
-  }
+  ]
 }
