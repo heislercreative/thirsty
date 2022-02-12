@@ -1,55 +1,22 @@
-import { CircularProgress, InputAdornment, List, ListItem, TextField } from '@mui/material';
-import { Close, Search } from '@mui/icons-material';
+import { List, ListItem } from '@mui/material';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { searchCocktails } from '../api/cocktail';
-import { Loader } from '../components/layout';
+import { Loader, SearchBar } from '../components/layout';
 import { Cocktail } from '../models';
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
-  const [searching, setSearching] = useState(false);
   const [results, setResults] = useState<Cocktail[]>([]);
-
-  const clearSearch = () => setSearchTerm('');
-
-  const fetchResults = useCallback(async () => {
-    const drinks = await searchCocktails(searchTerm);
-    setResults(drinks);
-    setSearching(false);
-  }, [searchTerm]);
 
   const routeToResult = (id: number) => {
     setLoading(true);
     router.push(`/cocktails/${id}`);
   };
-
-  const EndAdornment = () =>
-    searchTerm.length > 0 ? (
-      <InputAdornment className="search-end" position="end" onClick={clearSearch}>
-        {searching ? <CircularProgress size={24} /> : <Close />}
-      </InputAdornment>
-    ) : (
-      <></>
-    );
-
-  useEffect(() => {
-    let searchTimeout: NodeJS.Timeout;
-
-    if (searchTerm.length > 0) {
-      setSearching(true);
-      searchTimeout = setTimeout(() => fetchResults(), 200);
-    } else {
-      setResults([]);
-    }
-
-    return () => clearTimeout(searchTimeout);
-  }, [searchTerm, fetchResults]);
 
   return (
     <>
@@ -61,19 +28,7 @@ const Home: NextPage = () => {
       {loading && <Loader />}
 
       <main className="main cocktail-index">
-        <TextField
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-          placeholder="Find a drink"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search />
-              </InputAdornment>
-            ),
-            endAdornment: <EndAdornment />,
-          }}
-        ></TextField>
+        <SearchBar search={searchCocktails} setResults={setResults} placeholder="Find a drink" />
 
         {!!results.length && (
           <List className="results-list">
