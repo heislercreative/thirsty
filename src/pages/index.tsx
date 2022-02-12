@@ -82,7 +82,7 @@ const Home: NextPage = () => {
                 <div className="list-item-image">
                   <Image
                     className="round-image"
-                    src={strDrinkThumb}
+                    src={`${strDrinkThumb}/preview`}
                     alt={strDrink}
                     width={200}
                     height={200}

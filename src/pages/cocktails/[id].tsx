@@ -39,7 +39,7 @@ const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: 
               <div className="hero-image">
                 <Image
                   className="round-image"
-                  src={strDrinkThumb}
+                  src={`${strDrinkThumb}/preview`}
                   alt={strDrink}
                   placeholder="blur"
                   blurDataURL="/placeholder.png"
