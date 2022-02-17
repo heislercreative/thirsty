@@ -82,6 +82,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 export const getStaticPaths = async () => {
   const cocktails: Cocktail[] = [];
 
+  // With paid access to the API (which removes the 100 result limit), the following would be better to get all cocktail routes:
+  // const alchoholicResults = await getCocktailsByType('Alcoholic');
+  // const nonAlchoholicResults = await getCocktailsByType('Non_Alcoholic');
+  // cocktails.push(...alchoholicResults, ...nonAlchoholicResults);
+
   for (let i = 0; i < 26; i++) {
     const letter = (i + 10).toString(36);
     try {
