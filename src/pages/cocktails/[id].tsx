@@ -11,7 +11,7 @@ import { parseIngredients } from '../../utils';
 
 const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: boolean }) => {
   const { strDrink, strDrinkThumb, strInstructions } = cocktail || {};
-  const ingredients = parseIngredients(cocktail || {});
+  const ingredients = cocktail ? parseIngredients(cocktail) : [];
   const router = useRouter();
 
   useEffect(() => {
