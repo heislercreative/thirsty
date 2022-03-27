@@ -23,7 +23,10 @@ export const parseIngredients = (cocktail: Cocktail): Ingredient[] => {
     const name = entries.find(([key]) => key === `strIngredient${i}`)?.[1]?.trim();
 
     if (name) {
-      const measureString = entries.find(([key]) => key === `strMeasure${i}`)?.[1]?.trim();
+      const measureString = entries
+        .find(([key]) => key === `strMeasure${i}`)?.[1]
+        ?.trim()
+        .toLowerCase();
 
       if (measureString) {
         for (const key of Object.keys(conversions)) {
@@ -71,6 +74,7 @@ export const parseIngredientsChartData = (ingredients: Ingredient[]): ChartData[
 };
 
 export const generateRandomPastelColor = (): string => {
+  // TODO: Maintain list of already-generated colors & pad new hue by 15-20 to avoid duplicates
   const hue = Math.floor(Math.random() * 360);
   const saturation = Math.floor(20 + 70 * Math.random());
   const lightness = Math.floor(75 + 15 * Math.random());

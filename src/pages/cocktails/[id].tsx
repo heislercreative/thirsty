@@ -2,16 +2,16 @@ import type { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getCocktail, searchCocktailsByFirstLetter } from '../../api/cocktail';
 import { IngredientsChart } from '../../components/cocktail';
 import { Loader } from '../../components/layout';
-import { Cocktail, Ingredient } from '../../models';
+import { Cocktail } from '../../models';
 import { parseIngredients } from '../../utils';
 
 const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: boolean }) => {
   const { strDrink, strDrinkThumb, strInstructions } = cocktail || {};
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const ingredients = parseIngredients(cocktail || {});
   const router = useRouter();
 
   useEffect(() => {
@@ -19,12 +19,6 @@ const CocktailSingle = ({ cocktail, notFound }: { cocktail: Cocktail; notFound: 
       router.push('/');
     }
   }, [notFound, router]);
-
-  useEffect(() => {
-    if (cocktail) {
-      setIngredients(parseIngredients(cocktail));
-    }
-  }, [cocktail]);
 
   return (
     <>
